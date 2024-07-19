@@ -1,6 +1,6 @@
 # Privilege escalation
 
-Retrouvez la vidéo ici : 
+Retrouvez la vidéo ici : https://www.youtube.com/watch?v=zLxW6Dvruy0&feature=youtu.be. 
 
 ## executer les exemples : 
 
