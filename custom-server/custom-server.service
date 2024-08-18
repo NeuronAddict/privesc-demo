@@ -1,0 +1,9 @@
+[Unit]
+Description=My custom Server
+
+[Service]
+ExecStart=/home/vagrant/custom-server/custom-server
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

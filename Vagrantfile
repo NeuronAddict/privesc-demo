@@ -56,13 +56,13 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+    vb.memory = "1024"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -71,12 +71,26 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+
     dnf -y install dnf-plugins-core
     dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-    sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin git httpd zsh vim
+
     systemctl enable --now docker
-    dnf install -y httpd zsh
-    # Don't do this ! 
+
+    cd /vagrant && tar -cvzf /home/vagrant/custom-server.tar.gz custom-server \
+        && chown vagrant:vagrant /home/vagrant/custom-server.tar.gz \
+        && cd -
+
+    echo "complete -cf sudo" >> /home/vagrant/.bashrc
+
+    # Don't do this !
     # usermod -aG docker vagrant
+
+    #for dist in debian ubuntu fedora alpine
+    #do
+    #    docker build -f "/vagrant/docker/Dockerfile.$dist" -t "privesc/$dist" /vagrant/docker
+    #done
+
   SHELL
 end
